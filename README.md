@@ -267,4 +267,8 @@ POST 127.0.0.1:3001/order/
 DELETE 127.0.0.1:3001/order/242
 ````
 
-
+**Next Feature**
+````javascript
+ - Login and Registration
+ - Front End with React
+````
