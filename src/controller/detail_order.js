@@ -13,6 +13,22 @@ module.exports = {
     },
     createOrder: async(request, response) => {
         try {
+            const {user_id, order} = request.body
+            order.map(order => {
+                const{id_product, quantity} = order
+                if(!id_product || !quantity){
+                    jsonError(response, error)
+                    throw new Error('ERROR')
+                }
+                if(quantity < 1) {
+                    jsonError(response, error)
+                    throw new Error('ERROR')
+                }
+                if(!response.body && !user_id || !order) {
+                    jsonError(response, error)
+                    throw new Error('ERROR')
+                }  
+            })
             const order_reff = ran(6,'0')
             const cashier = request.body.user_id
             const requestOrder = await setIdOrder(order_reff, cashier)
@@ -26,13 +42,13 @@ module.exports = {
                         id_product: element.id_product,
                         order_id:requestOrder.insertId,
                         quantity: element.quantity,
-                        payment: element.payment
+                        payment: element.payment,
                     }
                     const price = await getPrice(element.id_product)
                     const newprice = {
                         ...price[0]
                     }
-                    // dataDetails.price = newprice.price
+                    dataDetails.price = newprice.price
                     // console.log(price[0].price)
                     // console.log(newprice)
                     // console.log(dataDetails);

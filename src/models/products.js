@@ -16,7 +16,7 @@ module.exports = {
     searchname:(param) => {
         return new Promise((resolve, reject) => {
             let find = ''
-            let page = ''
+            let offset = ''
             let limit =''
             let sort = ''
             let category = ''
@@ -26,6 +26,8 @@ module.exports = {
             // console.log(param);
             if (param.limit){
                 limit =  ` LIMIT ${param.limit}`
+            }else{
+                limit = ` LIMIT 100`
             }
             if(param.sortby){
                 sort = ` ORDER BY ${param.sortby}`
@@ -33,10 +35,10 @@ module.exports = {
             if(param.category){
                 category = ` WHERE category LIKE '%${param.category}%'`
             }
-            if (param.page) {
-                page = ` OFFSET ${param.page}`
+            if (param.offset){
+                offset = ` OFFSET ${param.offset}`
             }
-            let query = 'SELECT * FROM products'+find+sort+category+limit+page
+            let query = 'SELECT * FROM products'+find+sort+category+limit+offset
             // console.log(query)
             connection.query(query, (error, result) =>{
                 if (!error){

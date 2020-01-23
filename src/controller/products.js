@@ -52,7 +52,7 @@ module.exports = {
       try {
         const param = {
             name: request.query.name,
-            page : request.query.page,
+            offset : request.query.offset,
             limit: request.query.limit,
             sortby: request.query.sortby,
             category: request.query.category,

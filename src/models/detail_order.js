@@ -43,15 +43,17 @@ module.exports = {
         })
     },    
     setDetail: (dataDetails) => {
-        // console.log(dataDetails);
+        // console.log(dataDetails.quantity);
         return new Promise((resolve, reject) => {
             connection.query('INSERT INTO details_order SET ?', dataDetails, 
             (error, result) => {
                 if(!error){
-                    // console.log(newResult); 
+                    // console.log(dataDetails.quantity);
                     return resolve(result) 
                 }else{
                     reject(new Error(error))
+                    console.log(error);
+                    
                 }
             })
         })
