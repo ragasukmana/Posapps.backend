@@ -1,3 +1,6 @@
+![logo arkademy-01 9c1222ba](https://user-images.githubusercontent.com/57278324/72949851-11342f00-3dbc-11ea-9145-0c9fb713f20f.png)
+
+
 #
 # POSAPPS BACKEND
 
