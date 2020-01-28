@@ -1,25 +1,16 @@
 const express = require('express')
 const Route = express.Router()
-const multer = require('multer')
+const { authorization } = require('../middleware/auth')
 
-const storage = multer.diskStorage({
-    destination: (request, file, cb) => {
-        cb(null, './pictures/')
-    },
-    filename: (request, file, cb) => {
-        cb(null, Date.now() + file.originalname)
-    }
-})
-
-const upload = multer({storage: storage})
-
-const {getProducts, createProducts, editProducts, deleteProducts, findProducts} = require('../controller/products')
+const { getProducts, createProducts, editProducts,
+    deleteProducts, findProducts } = require('../controller/products')
+const { fileFilter } = require('../middleware/pictures')
 
 Route
-    
+
     .get('/', findProducts)
-    .post('/', upload.single('image') , createProducts)
-    .put('/:id', upload.single('image'), editProducts)
+    .post('/', fileFilter('image'), createProducts)
+    .put('/:id', fileFilter('image'), editProducts)
     .delete('/:id', deleteProducts)
 
 module.exports = Route

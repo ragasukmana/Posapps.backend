@@ -6,10 +6,10 @@ module.exports = {
 
         return response.status(result.status).json(result)
     },
-    qtyresponse: (response, status, message) => {
+    passwordres: (response, status, message) => {
         const result = {}
         result.status = status || 403
-        result.message = 'Quantity product must be 1 or more'
+        result.message = 'Password Incorrect'
         
         return response.status(result.status).json(result)
     }

@@ -35,7 +35,7 @@ module.exports = {
                         ...result
                     }
                     resolve(data)
-                    // console.log(resultid.insertId);
+    
                 }else{
                     reject(new Error(error))
                 }
@@ -43,16 +43,17 @@ module.exports = {
         })
     },    
     setDetail: (dataDetails) => {
-        // console.log(dataDetails.quantity);
         return new Promise((resolve, reject) => {
             connection.query('INSERT INTO details_order SET ?', dataDetails, 
             (error, result) => {
                 if(!error){
-                    // console.log(dataDetails.quantity);
-                    return resolve(result) 
+                    const newResult = {
+                        message:'Order Added',
+                        ...dataDetails
+                    }
+                    return resolve(newResult) 
                 }else{
                     reject(new Error(error))
-                    console.log(error);
                     
                 }
             })

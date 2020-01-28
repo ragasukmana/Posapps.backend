@@ -23,7 +23,6 @@ module.exports = {
             if (param.name) {
                 find = ` WHERE name LIKE '%${param.name}%'` 
             } 
-            // console.log(param);
             if (param.limit){
                 limit =  ` LIMIT ${param.limit}`
             }else{
@@ -39,9 +38,8 @@ module.exports = {
                 offset = ` OFFSET ${param.offset}`
             }
             let query = 'SELECT * FROM products'+find+sort+category+limit+offset
-            // console.log(query)
             connection.query(query, (error, result) =>{
-                if (!error){
+                if (!error && query != undefined){
                     resolve(result)
                 } else {
                     reject(new Error(error))
@@ -72,10 +70,8 @@ module.exports = {
                 if(image != '') {
                     fs.unlink(image, error => {
                         if(error) throw error
-                        console.log('Berhasil')
                     })
                 } else {
-                    console.log('Berhasil')
                 }
                 connection.query('UPDATE products SET? WHERE id=?', [setData, id], (error, result) => {
                     if (!error){
@@ -102,20 +98,18 @@ module.exports = {
                     if(image != '') {
                         fs.unlink(image, error => {
                             if (error) throw error
-                            console.log('berhasil');
                         })
                     }else{
-                        console.log('deleted');
                     }
                     connection.query('DELETE from products WHERE id=?', id, (error, result)=>{
                         if (!error){
                             const newResult = {
                                 message: 'File Deleted',
-                                id: id
                             }
                             resolve(newResult)
                         } else {
                             reject(new Error(error))
+                            
                         }
                     })
             })

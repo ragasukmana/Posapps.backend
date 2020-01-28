@@ -63,5 +63,5 @@ module.exports = {
         return helper.response(response, 400, error)
       }
 
-   },
+   }
 }

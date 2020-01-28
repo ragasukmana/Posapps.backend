@@ -15,9 +15,11 @@ module.exports = {
     postCategory:(setData) =>{
         return new Promise((resolve, reject) => {
             connection.query('INSERT INTO category SET ?', setData, (error, result) =>{
+                console.log(setData);
+                
                 if (!error){
                     const newResult = {
-                        id: result.insertid,
+                        message: "Category Success Added",
                         ...setData
                     }
                     resolve(newResult)
@@ -32,7 +34,7 @@ module.exports = {
             connection.query('UPDATE category SET ? WHERE id=?', [setData, id], (error, result) => {
                 if (!error){
                     const newResult = {
-                        id: id,
+                        message: "Category Success Edited",
                         ...setData
                     }
                     resolve(newResult)
@@ -47,7 +49,7 @@ module.exports = {
             connection.query('DELETE from category WHERE id=?', id,(error, result) => {
                 if (!error){
                     const newResult = {
-                        id:id
+                        message: "Category Success Deleted"
                     }
                     resolve(newResult)
                 } else {

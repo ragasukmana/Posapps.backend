@@ -5,7 +5,11 @@ const routerNavigation = require('./src')
 const morgan = require('morgan')
 const cors = require('cors')
 const fs = require('fs')
+const path = require('path')
 
+
+const pictures = express.static(path.join(__dirname, 'pictures'))
+app.use('/pictures', pictures)
 
 app.use(cors())
 
@@ -16,8 +20,8 @@ app.use(function(req, res, next) {
   });
 
 
-app.listen(3001, "127.0.0.1", () =>{
-    console.log("Listen on 127.0.0.1:3001");
+app.listen(process.env.SERVER_PORT, process.env.SERVER_HOST, () =>{
+    console.log("Listen on 127.0.0.1:3003");
 })
 
 app.use(bodyParser.json())
@@ -25,6 +29,6 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(morgan("dev"))
 app.use('/', routerNavigation)
 
-app.listen(85, function () {
-    console.log('CORS-enabled web server listening on port 85')
+app.listen(97, function () {
+    console.log('CORS-enabled web server listening on port 97')
   })
