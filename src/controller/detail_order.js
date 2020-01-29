@@ -15,8 +15,8 @@ module.exports = {
         try {
             const {user_id, order} = request.body
             order.map(order => {
-                const{id_product, quantity} = order
-                if(!id_product || !quantity){
+                const{id, quantity} = order
+                if(!id || !quantity){
                     jsonError(response, error)
                     throw new Error('ERROR')
                 }
@@ -35,12 +35,11 @@ module.exports = {
                 let total = 0    
                 await request.body.order.map(async(element)=> { 
                     const dataDetails = {
-                        id_product: element.id_product,
+                        id: element.id,
                         order_id:requestOrder.insertId,
-                        quantity: element.quantity,
-                        payment: element.payment,
+                        quantity: element.quantity
                     }
-                    const price = await getPrice(element.id_product)
+                    const price = await getPrice(element.id)
                     const newprice = {
                         ...price[0]
                     }
@@ -49,9 +48,9 @@ module.exports = {
                     total += newprice.price*element.quantity  
                     await setTotalPrice(requestOrder.order_reff, total)
                 }) 
-            return helper.response(response, 200, result)
+                
+            return helper.response(response, 200, {message:'status OK'})
             }catch (error) {
-            console.log(error);
             return helper.response(response, 400, error);
             
         }

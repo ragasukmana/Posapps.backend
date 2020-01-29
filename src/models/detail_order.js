@@ -51,17 +51,16 @@ module.exports = {
                         message:'Order Added',
                         ...dataDetails
                     }
-                    return resolve(newResult) 
+                    return resolve(newResult)   
                 }else{
                     reject(new Error(error))
-                    
                 }
             })
         })
     },
-    getPrice:(id_product) => {
+    getPrice:(id) => {
         return new Promise((resolve, reject) => {
-            connection.query('SELECT price FROM products WHERE id=?', [id_product], 
+            connection.query('SELECT price FROM products WHERE id=?', [id], 
             (error, result) =>{
                 if(!error){
                     resolve(result)
