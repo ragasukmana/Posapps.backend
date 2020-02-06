@@ -4,7 +4,7 @@ const fs = require('fs')
 module.exports = {
     getProducts: () => {
         return new Promise((resolve, reject) =>{
-            connection.query('SELECT * FROM products', (error, result)  =>{
+            connection.query('SELECT category.name, products.* FROM category INNER JOIN products ON category.id = products.category', (error, result)  =>{
                 if (!error){
                     resolve(result)
                 } else {
@@ -19,10 +19,13 @@ module.exports = {
             let offset = ''
             let limit =''
             let sort = ''
-            let category = ''
-            if (param.name) {
-                find = ` WHERE name LIKE '%${param.name}%'` 
-            } 
+            if (param.name_product && param.category) {
+                find = ` WHERE name_product LIKE '%${param.name_product}%' AND category LIKE '%${param.category}%'` 
+            }else if(param.category){
+                find = ` WHERE category LIKE '%${param.category}%'` 
+            }else if(param.name_product){
+                find =  ` WHERE name_product LIKE '%${param.name_product}%'`
+            }
             if (param.limit){
                 limit =  ` LIMIT ${param.limit}`
             }else{
@@ -31,20 +34,19 @@ module.exports = {
             if(param.sortby){
                 sort = ` ORDER BY ${param.sortby}`
             }
-            if(param.category){
-                category = ` WHERE category LIKE '%${param.category}%'`
-            }
             if (param.offset){
                 offset = ` OFFSET ${param.offset}`
             }
-            let query = 'SELECT * FROM products'+find+sort+category+limit+offset
+            let query = 'SELECT category.name as name_category, products.* FROM products INNER JOIN category ON category.id = products.category'+find+sort+limit+offset
             connection.query(query, (error, result) =>{
                 if (!error && query != undefined){
                     resolve(result)
                 } else {
                     reject(new Error(error))
+                    console.log(error);
+                    
                 }
-            } )
+            })
         })
     },
     postProducts: (setData) => {
@@ -112,6 +114,39 @@ module.exports = {
                             
                         }
                     })
+            })
+        })
+    },
+    getPage: (param) => {
+        return new Promise((resolve, reject) => {
+            let find = ''
+            let sort = ''
+            if (param.name_product && param.category) {
+                find = ` WHERE name_product LIKE '%${param.name_product}%' AND category LIKE '%${param.category}%'` 
+            }else if(param.category){
+                find = ` WHERE category LIKE '%${param.category}%'` 
+            }else if(param.name_product){
+                find =  ` WHERE name_product LIKE '%${param.name_product}%'`
+            }
+            if(param.sortby){
+                sort = ` ORDER BY ${param.sortby}`
+            }
+            let query = 'SELECT COUNT(*) as numRows FROM products'+find+sort
+            connection.query(query, (error, result) => {            
+                const numRows = result[0].numRows
+                const numPages = Math.ceil(numRows/6)
+                
+                if(!error){
+                    const newResult={
+                        TotalItem: numRows,
+                        TotalPage: numPages
+                    }
+                    
+                    resolve(newResult)
+                }else{
+                    console.log(error);
+                    reject(new Error(error))
+                }
             })
         })
     }

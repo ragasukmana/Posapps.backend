@@ -1,4 +1,5 @@
-const {getProducts, postProducts, putProducts, deleteProducts, searchname} = require('../models/products')
+const {getProducts, postProducts, putProducts, deleteProducts, 
+    searchname, getPage, getDataSort} = require('../models/products')
 const helper = require('../helper')
 
 module.exports = {
@@ -9,7 +10,7 @@ module.exports = {
     createProducts: async(request, response) => {
         try {
             const setData = {
-                    name: request.body.name,
+                    name_product: request.body.name_product,
                     description: request.body.description,
                     image: request.file.path,
                     category: request.body.category,
@@ -25,7 +26,7 @@ module.exports = {
     editProducts: async(request, response) => {
         try {
             const setData = {
-                name: request.body.name,
+                name_product: request.body.name_product,
                 description: request.body.description,
                 image: request.file.path,
                 category: request.body.category,
@@ -51,15 +52,24 @@ module.exports = {
     findProducts: async(request, response) => {
       try {
         const param = {
-            name: request.query.name,
+            name_product: request.query.name_product,
             offset : request.query.offset,
             limit: request.query.limit,
             sortby: request.query.sortby,
-            category: request.query.category,
+            category: request.query.category
         }
         const result = await searchname(param)
-        return helper.response(response, 200, result)
+        const total = await getPage(param)
+        const {TotalItem, TotalPage} = total
+        return helper.response(response, 200, {
+            result,
+            TotalPage,
+            TotalItem
+        
+        })
       } catch (error) {
+          console.log(error);
+          
         return helper.response(response, 400, error)
       }
 

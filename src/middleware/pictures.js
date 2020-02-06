@@ -11,31 +11,27 @@ const helper = require('../helper')
             cb(null, rand(10, '0') + path.extname(file.originalname))
         }
     })
-   
-    const upload = multer({storage}) 
+    const upload = multer({storage, 
+    limits:{fileSize:500000}, fileFilter:(req, file, cb)=>{
+        const ext = path.extname(file.originalname)
+        if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
+        return cb(new Error ('file not support'), false)
+        }
+        cb(null, true)
+    }}) 
 
-    fileFilter = () => {
-        return ((req, res, next) => {
-            upload.single('image')(req,res,() => {
-                const ext = path.extname(req.file.filename)
-                if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
-                    return helper.response(res, 400, {message: "Forbidden File Extension"})
-                }else{
-                    next()
+    fileFilter = (req,res,next) => {
+            upload.single('image')(req,res,(error) => {  
+                if (error instanceof multer.MulterError){
+                    return helper.response(res, 403, {message: error.message})
+                }
+                else{
+                    next()  
                 }
             })
-        })
+        // })
     } 
-    
-        
-    
-    // fileFilter: function (request, file,cb) {
-    //     var ext = path.extname(file.originalname)
-    //     if (ext !== ('.png' || '.jpg' || '.jpeg' || '.gif')) {
-    //         return cb(new Error('not true'))
-    //     }
-    //     cb(null, true)
-    // }
-// })
+
+
 
 module.exports = {fileFilter}

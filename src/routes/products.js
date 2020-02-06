@@ -9,8 +9,8 @@ const { fileFilter } = require('../middleware/pictures')
 Route
 
     .get('/', findProducts)
-    .post('/', fileFilter('image'), createProducts)
-    .put('/:id', fileFilter('image'), editProducts)
+    .post('/', fileFilter, createProducts)
+    .put('/:id', fileFilter, editProducts)
     .delete('/:id', deleteProducts)
 
 module.exports = Route

@@ -1,7 +1,7 @@
 const connection = require('../config/mysql')
 
 module.exports = {
-    getCategory: () => {
+    getCategory: (param) => {
         return new Promise((resolve, reject)=>{
             connection.query('SELECT * FROM category', (error, result)=>{
                 if (!error){
@@ -56,6 +56,23 @@ module.exports = {
                     reject(new Error(error))
                 }
             })
+        })
+    },
+    getPage:() => {
+        return new Promise((resolve, reject) => {
+        connection.query('SELECT COUNT(*) as numRows FROM category', (error, result) => {
+            const numRows = result[0].numRows
+            const numPages = Math.ceil(numRows/6)
+
+            if(!error) {
+                const newResult={
+                    totalItem: numRows,
+                    totalPage: numPages
+                }
+                resolve(newResult)
+            }else
+            reject(new Error(error))
+        })
         })
     }
 }

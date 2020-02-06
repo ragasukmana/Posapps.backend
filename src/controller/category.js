@@ -1,10 +1,16 @@
-const {getCategory, postCategory, putCategory, deleteCategory} = require('../models/category')
+const {getCategory, postCategory, putCategory, deleteCategory, getPage} = require('../models/category')
 const helper = require('../helper')
 
 module.exports = {
     getCategory: async(request, response) => {
         const result = await getCategory()
-        return helper.response(response, 200, result)
+        const total = await getPage()
+        const {totalItem, totalPage} = total
+        return helper.response(response, 200, {
+            result,
+            totalPage,
+            totalItem
+        })
     },
     createCategory: async(request, response) =>{
         try {
@@ -14,7 +20,7 @@ module.exports = {
             const result = await postCategory(setData)
             return helper.response(response, 200, result)
         } catch (error) {
-            return helper.response(response, 403, error)
+            return helper.response(response, 400, error)
         }
     },
     editCategory: async(request, response) => {
