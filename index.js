@@ -4,13 +4,13 @@ const bodyParser = require('body-parser')
 const routerNavigation = require('./src')
 const morgan = require('morgan')
 const cors = require('cors')
-const fs = require('fs')
 const path = require('path')
 
 
 const pictures = express.static(path.join(__dirname, 'pictures'))
+const profilepic = express.static(path.join(__dirname, 'profilepic'))
 app.use('/pictures', pictures)
-
+app.use('/profilepic', profilepic)
 app.use(cors())
 
 app.use(function(req, res, next) {

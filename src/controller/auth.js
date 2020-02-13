@@ -7,14 +7,21 @@ const salt = bcrypt.genSaltSync(6)
 
 module.exports = {
     getUser: async(request, response) => {
-        const result = await getUser()
-        const total = await getPage()
-        const{totalItem, totalPage} = total
-        return helper.response(response, 200, {
-            result,
-            totalItem,
-            totalPage
-        })
+        try{
+            const param ={
+                id_user: request.query.id_user
+            }
+            const result = await getUser(param)
+            const total = await getPage()
+            const{totalItem, totalPage} = total
+            return helper.response(response, 200, {
+                result,
+                totalItem,
+                totalPage
+            })
+        } catch (error){
+            return helper.response(response, 400, error)
+        }
     },
     CreateUser: async (request, response) => {
         try {
@@ -22,12 +29,14 @@ module.exports = {
                 username: request.body.username,
                 password: bcrypt.hashSync(request.body.password, salt),
                 name: request.body.name,
-                role: request.body.role
+                role: request.body.role,
+                pictures: request.file
             }
             const result = await CreateUser(setData)
             return helper.response(response, 200, result)
         } catch (error) {
-            return helper.response(response, 400, {message:"Username Already Use"})
+            console.log(error);
+            return helper.response(response, 400, error)
         }
     },
     LoginUser: async (request, response) => {
@@ -40,6 +49,8 @@ module.exports = {
             const token = jwt.sign({result}, 'uzumy112', {algorithm:"HS256", expiresIn : '1h'})
             return helper.response(response, 200, {token, ...result})
         } catch (error) {
+            console.log(error);
+            
             return helper.response(response, 400, {error, message: "Password Incorrect"})
         }
     },
@@ -49,8 +60,10 @@ module.exports = {
                 username: request.body.username,
                 password: bcrypt.hashSync(request.body.password, salt),
                 name: request.body.name,
-                role: request.body.role
+                role: request.body.role,
+                pictures: request.file.path
             }
+            console.log(request.file);
             const id_user = request.params.id_user
             const result = await PutUser(setData, id_user)
             return helper.response(response, 200, result)
