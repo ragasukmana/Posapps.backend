@@ -49,7 +49,7 @@ module.exports = {
                     const detailAccount = {
                         ...result[0]
                     }
-                    if (result[0]) {
+                    if (result && result[0]) {
                         bcrypt.compare(data.password, result[0].password).then((result) => {
                             console.log(result);
                             if (result !== false) {
@@ -59,7 +59,7 @@ module.exports = {
                                 reject(new Error(error))
                             }
                         })
-                        
+
                     }else{
                         reject(new Error(error))
                     }
