@@ -47,7 +47,7 @@ module.exports = {
             connection.query('SELECT * FROM account WHERE username=?',
                 data.username, (error, result) => {
                     const detailAccount = {
-                        ...result[0]
+                        ...result ? result[0] : null
                     }
                     if (result && result[0]) {
                         bcrypt.compare(data.password, result[0].password).then((result) => {
