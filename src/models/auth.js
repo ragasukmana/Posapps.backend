@@ -49,16 +49,19 @@ module.exports = {
                     const detailAccount = {
                         ...result[0]
                     }
-                    bcrypt.compare(data.password, result[0].password).then((result) => {
-                        console.log(result);
-                        if (result !== false) {
-                            delete detailAccount.password
-                            resolve(detailAccount)
-                        } else {
-                            reject(new Error(error))
-                        }
-                    })
-
+                    if (result[0]) {
+                        bcrypt.compare(data.password, result[0].password).then((result) => {
+                            console.log(result);
+                            if (result !== false) {
+                                delete detailAccount.password
+                                resolve(detailAccount)
+                            } else {
+                                reject(new Error(error))
+                            }
+                        })
+                    }else{
+                        reject(new Error(error))
+                    }
                 })
         })
     },
