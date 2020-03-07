@@ -58,11 +58,10 @@ module.exports = {
                 password: bcrypt.hashSync(request.body.password, salt),
                 name: request.body.name,
                 role: request.body.role,
-                pictures: request.file.path
+                pictures: request.file.path ? request.file.path : ''
             }
             const id_user = request.params.id_user
             const result = await PutUser(setData, id_user)
-            // console.log(result);
             return helper.response(response, 200, result)
         } catch (error) {
             console.log(error);
