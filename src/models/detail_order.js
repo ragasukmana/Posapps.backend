@@ -16,24 +16,24 @@ module.exports = {
     },
     getPostOrder: (param) => {
         return new Promise((resolve, reject) => {
-            let sort=''
-            let limit=''
-            if (param.sortby){
+            let sort = ''
+            let limit = ''
+            if (param.sortby) {
                 sort = ` ORDER BY ${param.sortby}`
             }
-            if (param.limit){
+            if (param.limit) {
                 limit = ` LIMIT ${param.limit}`
-            }else{
+            } else {
                 limit = ` LIMIT 100`
             }
-            let query = 'SELECT account.name as name_account, post_order.* FROM post_order INNER JOIN account ON account.id_user = post_order.cashier'+sort+limit
+            let query = 'SELECT account.name as name_account, post_order.* FROM post_order INNER JOIN account ON account.id_user = post_order.cashier' + sort + limit
             connection.query(query, (error, result) => {
                 if (!error) {
                     resolve(result)
                 } else {
                     reject(new Error(error))
                     console.log(error);
-                    
+
                 }
             })
         })
@@ -48,8 +48,10 @@ module.exports = {
                             order_reff,
                             ...result
                         }
+                        console.log(data);
                         resolve(data)
                     } else {
+                        console.log(error);
                         reject(new Error(error))
                     }
                 })
@@ -113,12 +115,12 @@ module.exports = {
     getNameProduct: (id) => {
         return new Promise((resolve, reject) => {
             connection.query('SELECT name_product FROM products WHERE id=?', [id], (error, result) => {
-                if(!error) {
+                if (!error) {
                     const newResult = {
                         name_product: result[0].name_product
                     }
                     resolve(newResult)
-                }else{
+                } else {
                     reject(new Error(error))
                 }
             })
