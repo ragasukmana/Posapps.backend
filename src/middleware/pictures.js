@@ -22,6 +22,7 @@ const helper = require('../helper')
 
     fileFilter = (req,res,next) => {
             upload.single('image')(req,res,(error) => {  
+                console.log(error);
                 if (error instanceof multer.MulterError){
                     return helper.response(res, 403, {message: error.message})
                 }

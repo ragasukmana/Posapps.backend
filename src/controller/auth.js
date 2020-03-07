@@ -62,8 +62,10 @@ module.exports = {
             }
             const id_user = request.params.id_user
             const result = await PutUser(setData, id_user)
+            // console.log(result);
             return helper.response(response, 200, result)
         } catch (error) {
+            console.log(error);
             return helper.response(response, 400, error)
         }
     },

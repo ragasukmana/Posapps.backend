@@ -6,10 +6,10 @@ module.exports = {
     getUser: (param) => {
         return new Promise((resolve, reject) => {
             let find = ''
-            if(param.id_user){
+            if (param.id_user) {
                 find = ` WHERE id_user=${param.id_user}`
             }
-            let query = 'SELECT id_user, username, name, role, pictures,create_date, update_date FROM account'+find
+            let query = 'SELECT id_user, username, name, role, pictures,create_date, update_date FROM account' + find
             connection.query(query, (error, result) => {
                 if (!error) {
                     resolve(result)
@@ -31,7 +31,7 @@ module.exports = {
                 } else {
                     if (error.errno == '1062') {
                         reject(new Error(error))
-                        
+
                     } else {
                         reject(error)
                     }
@@ -56,8 +56,7 @@ module.exports = {
                                 reject(new Error(error))
                             }
                         })
-
-                    }else{
+                    } else {
                         reject(new Error(error))
                     }
                 })
@@ -65,26 +64,27 @@ module.exports = {
     },
     PutUser: (setData, id_user) => {
         return new Promise((resolve, reject) => {
-            connection.query('SELECT pictures FROM account WHERE id_user=?' , id_user, (error, result) => {
-                const pictures = result[0].pictures
-                if(pictures != ''){
-                    fs.unlink(pictures, error => {
-                        if(error) throw error
-                    })
-                }else{
-                }
-            connection.query('UPDATE account SET? WHERE id_user=?', [setData, id_user], (error, result) => {
-                if (!error) {
-                    delete setData.password
-                    const newResult = {
-                        ...setData
+            connection.query('SELECT pictures FROM account WHERE id_user=?', id_user, (error, result) => {
+                if (result[0] && result[0].pictures) {
+                    const pictures = result[0].pictures
+                    if (!pictures) {
+                        fs.unlink(pictures, error => {
+                            if (error) throw error
+                        })
                     }
-                    resolve(newResult)
-                } else {
-                    reject(new Error(error))
                 }
+                connection.query('UPDATE account SET ? WHERE id_user=?', [setData, id_user], (error, result) => {
+                    if (!error) {
+                        delete setData.password
+                        const newResult = {
+                            ...setData
+                        }
+                        resolve(newResult)
+                    } else {
+                        reject(new Error(error))
+                    }
+                })
             })
-         })
         })
     },
     DeleteUser: (id_user) => {

@@ -38,7 +38,7 @@ module.exports = {
     },
     setIdOrder: (order_reff, cashier) => {
         return new Promise((resolve, reject) => {
-            connection.query('INSERT INTO post_order SET order_reff =?, cashier=?, total_price=0', [order_reff, cashier],
+            connection.query('INSERT INTO post_order SET order_reff=?, cashier=?, total_price=0', [order_reff, cashier],
                 (error, result) => {
                     if (!error) {
                         const data = {
@@ -47,6 +47,7 @@ module.exports = {
                         }
                         resolve(data)
                     } else {
+                        console.log(error);
                         reject(new Error(error))
                     }
                 })
@@ -63,6 +64,7 @@ module.exports = {
                         }
                         return resolve(newResult)
                     } else {
+                        console.log(error);
                         reject(new Error(error))
                     }
                 })
