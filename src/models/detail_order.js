@@ -48,7 +48,7 @@ module.exports = {
                             order_reff,
                             ...result
                         }
-                        console.log(data);
+                        // console.log(data);
                         resolve(data)
                     } else {
                         console.log(error);
