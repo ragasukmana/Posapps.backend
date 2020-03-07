@@ -35,7 +35,6 @@ module.exports = {
             const result = await CreateUser(setData)
             return helper.response(response, 200, result)
         } catch (error) {
-            console.log(error);
             return helper.response(response, 400, error)
         }
     },
@@ -49,8 +48,6 @@ module.exports = {
             const token = jwt.sign({result}, 'uzumy112', {algorithm:"HS256", expiresIn : '1h'})
             return helper.response(response, 200, {token, ...result})
         } catch (error) {
-            console.log(error);
-            
             return helper.response(response, 400, {error, message: "Password Incorrect"})
         }
     },
@@ -63,12 +60,10 @@ module.exports = {
                 role: request.body.role,
                 pictures: request.file.path
             }
-            console.log(request.file);
             const id_user = request.params.id_user
             const result = await PutUser(setData, id_user)
             return helper.response(response, 200, result)
         } catch (error) {
-            console.log(error);
             return helper.response(response, 400, error)
         }
     },

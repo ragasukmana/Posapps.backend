@@ -17,7 +17,6 @@ module.exports = {
         const result = await getPostOrder(param)
         return helper.response(response, 200, result)
     } catch (error) {
-        console.log(error);
         return helper.response(response, 400, error)
         
      }
@@ -80,7 +79,6 @@ module.exports = {
                 return helper.response(response, 200, newResult)
             })
         } catch (error) {
-            console.log(error);
             return helper.response(response, 400, error);
     
         }

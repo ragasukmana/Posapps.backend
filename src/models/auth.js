@@ -31,10 +31,8 @@ module.exports = {
                 } else {
                     if (error.errno == '1062') {
                         reject(new Error(error))
-                        console.log(error);
                         
                     } else {
-                        console.log(error);
                         reject(error)
                     }
 
@@ -51,7 +49,6 @@ module.exports = {
                     }
                     if (result && result[0]) {
                         bcrypt.compare(data.password, result[0].password).then((result) => {
-                            console.log(result);
                             if (result !== false) {
                                 delete detailAccount.password
                                 resolve(detailAccount)
@@ -73,7 +70,6 @@ module.exports = {
                 if(pictures != ''){
                     fs.unlink(pictures, error => {
                         if(error) throw error
-                        console.log(error);
                     })
                 }else{
                 }
@@ -85,8 +81,6 @@ module.exports = {
                     }
                     resolve(newResult)
                 } else {
-                    console.log(error);
-                    
                     reject(new Error(error))
                 }
             })

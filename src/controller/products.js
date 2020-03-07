@@ -68,8 +68,6 @@ module.exports = {
         
         })
       } catch (error) {
-          console.log(error);
-          
         return helper.response(response, 400, error)
       }
 

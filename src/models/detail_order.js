@@ -32,8 +32,6 @@ module.exports = {
                     resolve(result)
                 } else {
                     reject(new Error(error))
-                    console.log(error);
-
                 }
             })
         })
@@ -42,16 +40,13 @@ module.exports = {
         return new Promise((resolve, reject) => {
             connection.query('INSERT INTO post_order SET order_reff =?, cashier=?, total_price=0', [order_reff, cashier],
                 (error, result) => {
-                    console.log(result);
                     if (!error) {
                         const data = {
                             order_reff,
                             ...result
                         }
-                        // console.log(data);
                         resolve(data)
                     } else {
-                        console.log(error);
                         reject(new Error(error))
                     }
                 })
