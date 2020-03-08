@@ -7,7 +7,7 @@ const {fileFilter} = require('../middleware/profilepic')
     Route
     .get('/', getUser)
     .post('/login',LoginUser)
-    .post('/registration', CreateUser)
+    .post('/registration', fileFilter, CreateUser)
     .put('/edituser/:id_user',fileFilter, EditUser)
     .delete('/:id_user', DeleteUser)
 

@@ -47,7 +47,6 @@ module.exports = {
                         }
                         resolve(data)
                     } else {
-                        console.log(error);
                         reject(new Error(error))
                     }
                 })
@@ -64,7 +63,6 @@ module.exports = {
                         }
                         return resolve(newResult)
                     } else {
-                        console.log(error);
                         reject(new Error(error))
                     }
                 })

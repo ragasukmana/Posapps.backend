@@ -30,11 +30,12 @@ module.exports = {
                 password: bcrypt.hashSync(request.body.password, salt),
                 name: request.body.name,
                 role: request.body.role,
-                pictures: request.file
+                pictures: request.file ? request.file.path : ''
             }
             const result = await CreateUser(setData)
             return helper.response(response, 200, result)
         } catch (error) {
+            console.log(error);
             return helper.response(response, 400, error)
         }
     },
@@ -58,13 +59,12 @@ module.exports = {
                 password: bcrypt.hashSync(request.body.password, salt),
                 name: request.body.name,
                 role: request.body.role,
-                pictures: request.file.path ? request.file.path : ''
+                pictures: request.file ? request.file.path : '' 
             }
             const id_user = request.params.id_user
             const result = await PutUser(setData, id_user)
             return helper.response(response, 200, result)
         } catch (error) {
-            console.log(error);
             return helper.response(response, 400, error)
         }
     },
